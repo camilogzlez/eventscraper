@@ -40,9 +40,9 @@ def scrape_eventbrite():
             name = name.get_text(strip=True) if name else None
 
             paragraphs = details.find_all('p')
-            date = paragraphs[0].get_text(strip=True) if len(paragraphs) > 0 else None
-            location = paragraphs[1].get_text(strip=True) if len(paragraphs) > 1 else None
-            price = paragraphs[2].get_text(strip=True) if len(paragraphs) > 2 else None
+            date = paragraphs[0].get_text(strip=True) if len(paragraphs) > 0 else "voir lien pour plus d'informations"
+            location = paragraphs[1].get_text(strip=True) if len(paragraphs) > 1 else "voir lien pour plus d'informations"
+            price = paragraphs[2].get_text(strip=True) if len(paragraphs) > 2 else "voir lien pour plus d'informations"
 
             # Log the scraped data
             logger.info(f"Scraped data - Name: {name}, Date: {date}, Location: {location}, Price: {price}, Image URL: {image_url}, URL: {activity_url}")

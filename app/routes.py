@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template
 
 from app.models import Activity
-# from app.scraper.eventbrite_scraper import scrape_eventbrite
-# from app.scraper.facebook_scraper import scrape_facebook
+from app.scraper.eventbrite_scraper import scrape_eventbrite
+from app.scraper.facebook_scraper import scrape_facebook
 from app.scraper.tripadvisor_scraper import scrape_tripadvisor
 
 main = Blueprint('main', __name__, template_folder='templates')
@@ -15,9 +15,9 @@ def index():
 @main.route('/scrape')
 def scrape_data():
     # Scrape data from the various sources
-    # scrape_eventbrite()
-    # scrape_facebook()
+    scrape_eventbrite()
     scrape_tripadvisor()
+    scrape_facebook()
     return "Data scraped successfully!"
 
 @main.route('/scraped-data', methods=['GET'])

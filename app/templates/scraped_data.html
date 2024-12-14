@@ -11,14 +11,25 @@
         <thead>
             <tr>
                 <th>ID</th>
+                <th>Url</th>
                 <th>Name</th>
+                <th>Date</th>
+                <th>Price</th>
+                <th>Location</th>
+                <th>Source</th>
+
             </tr>
         </thead>
         <tbody>
             {% for activity in activities %}
             <tr>
                 <td>{{ activity.id }}</td>
+                <td>{{ activity.url }}</td>
                 <td>{{ activity.name }}</td>
+                <td>{{ activity.date }}</td>
+                <td>{{ activity.price }}</td>
+                <td>{{ activity.location }}</td>
+                <td>{{ activity.source }}</td>
             </tr>
             {% endfor %}
         </tbody>
