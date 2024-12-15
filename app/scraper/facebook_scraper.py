@@ -19,8 +19,10 @@ logger = logging.getLogger(__name__)
 def scrape_facebook():
     # Configure WebDriver options
     chrome_options = Options()
-    chrome_options.add_argument("--start-maximized")
+    chrome_options.add_argument("--headless")  # Run in headless mode (no UI)
+    chrome_options.add_argument("--disable-gpu")  # Disable GPU acceleration
     chrome_options.add_argument("--disable-notifications")
+    chrome_options.add_argument("--start-maximized")
 
     # Initialize WebDriver with options
     driver = webdriver.Chrome(options=chrome_options)
