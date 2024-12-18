@@ -1,14 +1,14 @@
 <template>
-  <v-container fluid class="pa-0">
+  <v-container  fluid class="pa-0">
     <v-row dense justify="center">
       <!-- Paginated Activities -->
       <v-col
         v-for="activity in paginatedActivities"
         :key="activity.id"
         cols="12"
-        sm="6"
-        md="4"
-        lg="3"
+        :sm="showMap ? 6 : 6"
+        :md="showMap ? 6 : 4"
+        :lg="showMap ? 6 : 3"
         class="pa-3"
       >
         <v-hover>
@@ -66,35 +66,16 @@
     </v-row>
 
     <!-- Pagination Controls -->
-    <div class="tw-flex tw-justify-center tw-mt-6 tw-space-x-2">
-      <button
-        @click="goToPage(currentPage - 1)"
-        :disabled="currentPage === 1"
-        class="tw-px-3 tw-py-2 tw-text-white tw-bg-gray-500 tw-rounded tw-hover:bg-gray-700 tw-disabled:bg-gray-300"
-      >
-        Previous
-      </button>
-
-      <button
-        v-for="page in totalPages"
-        :key="page"
-        @click="goToPage(page)"
-        class="tw-px-3 tw-py-2 tw-rounded"
-        :class="{
-          'tw-bg-blue-500 tw-text-white': currentPage === page,
-          'tw-bg-gray-200 tw-hover:bg-gray-300': currentPage !== page,
-        }"
-      >
-        {{ page }}
-      </button>
-
-      <button
-        @click="goToPage(currentPage + 1)"
-        :disabled="currentPage === totalPages"
-        class="tw-px-3 tw-py-2 tw-text-white tw-bg-gray-500 tw-rounded tw-hover:bg-gray-700 tw-disabled:bg-gray-300"
-      >
-        Next
-      </button>
+    <div
+      v-if="activities.length > 0"
+      class="tw-flex tw-justify-center tw-mt-6 tw-space-x-2"
+    >
+      <v-pagination
+        v-model="currentPage"
+        :length="totalPages"
+        :total-visible="7"
+        color="primary"
+      ></v-pagination>
     </div>
   </v-container>
 </template>
@@ -102,70 +83,45 @@
 <script>
 export default {
   props: {
-    activities: Array, // Array of activities
+    activities: Array,
+    showMap: Boolean,
   },
   data() {
     return {
-      currentPage: 1, // Current page number
-      itemsPerPage: 8, // Items per page
+      currentPage: 1,
+      itemsPerPage: 8,
     };
   },
   computed: {
-    // Calculate total pages based on activities length and itemsPerPage
+    paginatedActivities() {
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      return this.activities.slice(start, start + this.itemsPerPage);
+    },
     totalPages() {
       return Math.ceil(this.activities.length / this.itemsPerPage);
     },
-    // Paginated activities based on current page
-    paginatedActivities() {
-      const start = (this.currentPage - 1) * this.itemsPerPage;
-      const end = start + this.itemsPerPage;
-      return this.activities.slice(start, end);
-    },
   },
   methods: {
-    // Navigate to a specific page
-    goToPage(page) {
-      if (page > 0 && page <= this.totalPages) {
-        this.currentPage = page;
-      }
-    },
     getRandomColor() {
       const colors = ["#9d2f38", "#25798b", "#72a9fe", "#f9c904", "#323f46"];
       return colors[Math.floor(Math.random() * colors.length)];
     },
-    sourceIcon(source) {
-      switch (source.toLowerCase()) {
-        case "eventbrite":
-          return "mdi-calendar-star";
-        case "tripadvisor":
-          return "mdi-map-outline";
-        case "facebook":
-          return "mdi-facebook";
-        default:
-          return "mdi-help-circle";
-      }
-    },
     sourceIconColor(source) {
-      switch (source.toLowerCase()) {
-        case "eventbrite":
-          return "orange";
-        case "tripadvisor":
-          return "green";
-        case "facebook":
-          return "blue";
-        default:
-          return "gray";
-      }
+      return source === "eventbrite" ? "red" : "blue";
+    },
+    sourceIcon(source) {
+      return source === "eventbrite" ? "mdi-ticket" : "mdi-web";
     },
   },
 };
 </script>
 
 <style scoped>
-.transition-card {
-  transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+
+@media (max-width: 400px) {
+  .v-col {
+    width: 100% !important;
+    margin: 10px 0 !important; }
 }
-.transition-card:hover {
-  transform: scale(1.02); /* Slight zoom on hover */
-}
+
 </style>

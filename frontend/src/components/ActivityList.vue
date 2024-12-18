@@ -1,166 +1,188 @@
 <template>
-  <v-container fluid class="12 justify-center align-center text-center pa-0 fill-height">
+  <v-container fluid class="justify-center align-center text-center pa-0 fill-height">
     <!-- Header Section -->
-    <v-col cols="12 justify-center align-center text-center">
-        <v-img
+    <v-col cols="12" class="justify-center align-center text-center">
+      <v-img src="/logoeventsfinder.png" height="200" width="auto" class="mx-auto"></v-img>
+      <v-btn color="primary" @click="startScraping" class="mt-4 mb-4" large>
+        Scrape activities in Montpellier
+      </v-btn>
 
-          src="/logoeventsfinder.png"
-          height="200"
-          width="auto"
-          class="mx-auto"
-        ></v-img>
-        <v-btn color="primary" @click="startScraping" class="mt-4 mb-4" large>
-          Scrape activities in Montpellier
-        </v-btn>
+<v-progress-linear
+  v-if="loading"
+  indeterminate
+  color="#f9c904"
+  class="mt-2"
+  height="32"
+>
+  <template v-slot:default>
+    <span class="text-white">Loading, please wait...</span>
+  </template>
+</v-progress-linear>
 
-<!-- Toggle Filters Button and Filters Section -->
-<v-row class="justify-center">
-  <!-- Toggle Button -->
-    <v-btn
-      color="blue-grey-lighten-1"
-      text="true"
-      small
-      @click="showFilters = !showFilters"
-      class="my-2"
-      outlined
-    >
-      <v-icon left>
-        {{ showFilters ? 'mdi-chevron-up' : 'mdi-chevron-down' }}
-      </v-icon>
-      {{ showFilters ? 'Hide Filters' : 'Show Filters' }}
-    </v-btn>
-</v-row>
-  <!-- Filters Section -->
-  <v-expand-transition>
-    <v-col cols="12" v-if="showFilters" class="text-center">
-      <v-row class="justify-center">
-        <!-- Search Bar -->
-        <v-col cols="12" sm="3">
-          <v-text-field
-            v-model="searchQuery"
-            label="Search Activities"
-            outlined
-            dense
-            hide-details
-          />
-        </v-col>
-
-        <!-- Filter by Source -->
-        <v-col cols="12" sm="2">
-          <v-select
-            v-model="selectedSource"
-            :items="sources"
-            label="Filter by Source"
-            outlined
-            dense
-            hide-details
-          />
-        </v-col>
-
-        <!-- Start Date -->
-        <v-col cols="12" sm="2">
-          <v-menu
-            v-model="startDatePicker"
-            :close-on-content-click="false"
-            offset-y
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-text-field
-                v-model="startDate"
-                label="Start Date"
-                readonly
-                outlined
-                dense
-                v-bind="attrs"
-                v-on="on"
-                hide-details
-              />
-            </template>
-            <v-date-picker
-              v-model="startDate"
-              @input="startDatePicker = false"
-            />
-          </v-menu>
-        </v-col>
-
-        <!-- End Date -->
-        <v-col cols="12" sm="2">
-          <v-menu
-            v-model="endDatePicker"
-            :close-on-content-click="false"
-            offset-y
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-text-field
-                v-model="endDate"
-                label="End Date"
-                readonly
-                outlined
-                dense
-                v-bind="attrs"
-                v-on="on"
-                hide-details
-              />
-            </template>
-            <v-date-picker
-              v-model="endDate"
-              @input="endDatePicker = false"
-            />
-          </v-menu>
-        </v-col>
-
-        <!-- Sort By -->
-        <v-col cols="12" sm="2">
-          <v-select
-            v-model="sortOption"
-            :items="sortOptions"
-            label="Sort By"
-            outlined
-            dense
-            hide-details
-          />
-        </v-col>
-
-        <!-- Clear Filters Button -->
-        <v-col cols="12" sm="1" class="d-flex align-center">
-          <v-btn
-            color="teal-lighten-1"
-            @click="clearFilters"
-            dense
-            outlined
-            block
-          >
-            Clear
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-col>
-  </v-expand-transition>
-    </v-col>
-
-    <!-- Alert Message -->
-    <v-alert v-if="message" :type="messageType" class="mt-3">
+      <v-alert v-if="message" :type="messageType" class="mt-3 justify-center">
       {{ message }}
     </v-alert>
+    </v-col>
 
-    <!-- Activities Grid -->
-    <activities-grid :activities="filteredActivities" />
+
+    <!-- Toggle Buttons for Filters and Map -->
+    <v-row class="justify-center" v-if="activities.length > 0">
+      <!-- Filters Toggle -->
+      <v-btn
+        color="blue-grey-lighten-1"
+        text
+        small
+        @click="showFilters = !showFilters"
+        class="my-2 mx-2"
+        outlined
+      >
+        <v-icon left>
+          {{ showFilters ? 'mdi-chevron-up' : 'mdi-chevron-down' }}
+        </v-icon>
+        {{ showFilters ? 'Hide Filters' : 'Show Filters' }}
+      </v-btn>
+
+      <!-- Map Toggle -->
+      <v-btn
+        color="blue-grey-lighten-1"
+        text
+        small
+        @click="showMap = !showMap"
+        class="my-2 mx-2"
+        outlined
+      >
+        <v-icon left>
+          {{ showMap ? 'mdi-map-marker-off' : 'mdi-map-marker' }}
+        </v-icon>
+        {{ showMap ? 'Hide Map' : 'Show Map' }}
+      </v-btn>
+    </v-row>
+
+    <!-- Filters Section -->
+    <v-expand-transition>
+      <v-col cols="12" v-if="showFilters" class="text-center">
+        <v-row class="justify-center">
+          <!-- Search Bar -->
+          <v-col cols="12" sm="3">
+            <v-text-field
+              v-model="searchQuery"
+              label="Search Activities"
+              outlined
+              dense
+              hide-details
+            />
+          </v-col>
+
+          <!-- Filter by Source -->
+          <v-col cols="12" sm="2">
+            <v-select
+              v-model="selectedSource"
+              :items="sources"
+              label="Filter by Source"
+              outlined
+              dense
+              hide-details
+            />
+          </v-col>
+
+          <!-- Start Date -->
+          <v-col cols="12" sm="2">
+            <v-menu v-model="startDatePicker" :close-on-content-click="false" offset-y>
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="startDate"
+                  label="Start Date"
+                  readonly
+                  outlined
+                  dense
+                  v-bind="attrs"
+                  v-on="on"
+                  hide-details
+                />
+              </template>
+              <v-date-picker v-model="startDate" @input="startDatePicker = false" />
+            </v-menu>
+          </v-col>
+
+          <!-- End Date -->
+          <v-col cols="12" sm="2">
+            <v-menu v-model="endDatePicker" :close-on-content-click="false" offset-y>
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="endDate"
+                  label="End Date"
+                  readonly
+                  outlined
+                  dense
+                  v-bind="attrs"
+                  v-on="on"
+                  hide-details
+                />
+              </template>
+              <v-date-picker v-model="endDate" @input="endDatePicker = false" />
+            </v-menu>
+          </v-col>
+
+          <!-- Sort By -->
+          <v-col cols="12" sm="2">
+            <v-select
+              v-model="sortOption"
+              :items="sortOptions"
+              label="Sort By"
+              outlined
+              dense
+              hide-details
+            />
+          </v-col>
+
+          <!-- Clear Filters Button -->
+          <v-col cols="12" sm="1" class="d-flex align-center">
+            <v-btn color="teal-lighten-1" @click="clearFilters" dense outlined block>
+              Clear
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-expand-transition>
+
+    <!-- Alert Message -->
+
+
+    <!-- Main Content Section -->
+<v-row class="pa-4">
+  <!-- Activities Grid -->
+  <v-col :cols="showMap ? 6 : 12">
+    <activities-grid :activities="filteredActivities" :showMap="showMap" />
+  </v-col>
+
+  <!-- Map Component (Only visible when toggled on) -->
+<v-col v-if="showMap" cols="6" class="map-col">
+  <map-activities :activities="filteredActivities" />
+</v-col>
+</v-row>
+
+
   </v-container>
 </template>
 
 <script>
 import api from "../services/api";
 import ActivitiesGrid from "./ActivitiesGrid.vue";
+import MapActivities from "./MapActivities.vue";
 
 export default {
   components: {
     ActivitiesGrid,
+    MapActivities,
   },
   data() {
     return {
-      showFilters: false, // Filters hidden by default
+      loading: false,
+      showFilters: false, // Show/hide filters
+      showMap: false, // Show/hide map
       activities: [],
       filteredActivities: [],
+      mapKey: 0,
       message: "",
       messageType: "success",
       searchQuery: "",
@@ -176,11 +198,15 @@ export default {
   },
   methods: {
     async startScraping() {
+       this.loading = true;
       try {
         const response = await api.post("/scrape");
         if (response.data.success) {
           this.message = response.data.message;
           this.messageType = "success";
+          setTimeout(() => {
+        this.message = "";
+      }, 2000);
           this.fetchActivities();
         }
       } catch (error) {
@@ -189,6 +215,7 @@ export default {
       }
     },
     async fetchActivities() {
+       this.loading = false;
       try {
         const response = await api.get("/scraped-data");
         this.activities = response.data;
@@ -227,6 +254,7 @@ export default {
           }
           return 0;
         });
+      this.mapKey += 1;
     },
     clearFilters() {
       this.searchQuery = "";
@@ -249,15 +277,32 @@ export default {
   },
 };
 </script>
+final
 
 <style scoped>
 .v-btn {
   min-height: 36px;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 960px) {
+  /* Stack map and cards vertically with the map on top */
+  .V-container {
+    justify-content: center;
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Ensure map is displayed first */
+  .map-col {
+    order: -1;
+  }
+
+  /* Set the map to take full width on mobile */
   .v-col {
-    margin-bottom: 10px;
+    width: 100%;
   }
 }
+
+
 </style>
