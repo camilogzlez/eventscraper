@@ -3,12 +3,15 @@ from flask import Flask
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from dotenv import load_dotenv
+import os
 
 db = SQLAlchemy()
 migrate = Migrate()  # Initialize Migrate
 
 
 def create_app():
+    load_dotenv()
     app = Flask(__name__)
 
     # Enable CORS and define origins explicitly

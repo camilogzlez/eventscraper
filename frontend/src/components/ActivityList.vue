@@ -29,12 +29,13 @@
     <v-row class="justify-center" v-if="activities.length > 0">
       <!-- Filters Toggle -->
       <v-btn
-        color="blue-grey-lighten-1"
+        color="#9d2f38"
         text
         small
         @click="showFilters = !showFilters"
         class="my-2 mx-2"
         outlined
+        style="color: white;"
       >
         <v-icon left>
           {{ showFilters ? 'mdi-chevron-up' : 'mdi-chevron-down' }}
@@ -44,17 +45,30 @@
 
       <!-- Map Toggle -->
       <v-btn
-        color="blue-grey-lighten-1"
+        color="#25798b"
         text
         small
         @click="showMap = !showMap"
         class="my-2 mx-2"
         outlined
+        style="color: white;"
       >
         <v-icon left>
           {{ showMap ? 'mdi-map-marker-off' : 'mdi-map-marker' }}
         </v-icon>
         {{ showMap ? 'Hide Map' : 'Show Map' }}
+      </v-btn>
+       <!-- AI Assistant Toggle -->
+      <v-btn
+        color="#72a9fe"
+        text
+        small
+        @click="toggleAssistantModal"
+        class="my-2 mx-2"
+        outlined
+        style="color: white;"
+      >
+        🤟 AI Assistant(Beta)
       </v-btn>
     </v-row>
 
@@ -137,7 +151,7 @@
 
           <!-- Clear Filters Button -->
           <v-col cols="12" sm="1" class="d-flex align-center">
-            <v-btn color="teal-lighten-1" @click="clearFilters" dense outlined block>
+            <v-btn color="#25798b" @click="clearFilters" dense outlined block>
               Clear
             </v-btn>
           </v-col>
@@ -160,7 +174,9 @@
   <map-activities :activities="filteredActivities" />
 </v-col>
 </v-row>
-
+    <v-dialog v-model="showAssistantModal" max-width="2400" max-height="1500">
+      <IAAssistant @close="toggleAssistantModal" />
+    </v-dialog>
 
   </v-container>
 </template>
@@ -169,11 +185,13 @@
 import api from "../services/api";
 import ActivitiesGrid from "./ActivitiesGrid.vue";
 import MapActivities from "./MapActivities.vue";
+import IAAssistant from "./IAAssistant.vue";
 
 export default {
   components: {
     ActivitiesGrid,
     MapActivities,
+    IAAssistant,
   },
   data() {
     return {
@@ -194,6 +212,7 @@ export default {
       sortOption: null,
       sources: ["eventbrite", "tripadvisor", "facebook"],
       sortOptions: ["Name", "Date"],
+      showAssistantModal: false,
     };
   },
   methods: {
@@ -263,6 +282,9 @@ export default {
       this.endDate = null;
       this.sortOption = null;
       this.applyFilters();
+    },
+    toggleAssistantModal() {
+      this.showAssistantModal = !this.showAssistantModal;
     },
   },
   watch: {

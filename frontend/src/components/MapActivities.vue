@@ -12,10 +12,12 @@
       >
         <l-popup>
           <strong>{{ activities[index].name }}</strong><br />
-          {{ activities[index].location }}<br />
+           {{ activities[index].location }}<br />
+           {{ activities[index].date }}<br />
           <a :href="activities[index].url" target="_blank">More Info</a>
         </l-popup>
       </l-marker>
+
     </l-map>
     <v-alert v-if="geocodingError" type="error">
       Geocoding error: Unable to fetch coordinates for some activities.

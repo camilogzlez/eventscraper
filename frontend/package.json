@@ -13,6 +13,7 @@
     "@vue-leaflet/vue-leaflet": "^0.10.1",
     "axios": "^1.7.9",
     "core-js": "^3.8.3",
+    "google-auth-library": "^9.15.0",
     "leaflet": "^1.9.4",
     "roboto-fontface": "*",
     "vue": "^3.2.13",
