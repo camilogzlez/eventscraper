@@ -107,17 +107,16 @@ This project is designed to scrape activities from Eventbrite, TripAdvisor, and 
 ---
 
 ## Future Improvements
-
-- **Performance Optimization**: Enhance scraping efficiency with asynchronous processing.
-- **Additional Platforms**: Integrate more event platforms (e.g., Meetup, Ticketmaster).
-- **Advanced Filtering**: Add more granular filters (e.g., price range, event type).
-- **User Accounts**: Implement authentication for personalized event recommendations.
+-**Deploy the application**
+-**Advanced Filtering**:Standarize dates formats between service for correct filtering 
+-**Additional Platforms**:Integrate more pages for scrapping as GetyourGuide,funbooker, civitatis and maybey serves integrated as predicthq.
+ **AI Improvements**:Complete integration of Dialogflow,  Enhance Dialogflow integration with more conversational scenarios, train the model, Improve Ai integration.
+-**User Accounts**: Integrate user authentication, favorites, history, etc.
 - **Map Features**: Add clustering for nearby events on the map.
-- **AI Improvements**: Enhance Dialogflow integration with more conversational scenarios.
 
----
 
-Français
+
+## Français
 
 Ce projet est conçu pour récupérer des activités depuis Eventbrite, TripAdvisor et Facebook, offrant aux utilisateurs une plateforme centralisée pour explorer et interagir avec divers événements. L'application intègre :
 
@@ -220,14 +219,12 @@ Ce projet est conçu pour récupérer des activités depuis Eventbrite, TripAdvi
 
 ---
 
-### Améliorations
-
-- **Optimisation des performances** : Améliorer l’efficacité du scraping avec un traitement asynchrone.
-- **Nouvelles plateformes** : Intégrer davantage de plateformes d’événements (par ex., Meetup, Ticketmaster).
-- **Filtrage avancé** : Ajouter des filtres plus granulaires (par ex., gamme de prix, type d’événement).
-- **Comptes utilisateur** : Implémenter l’authentification pour des recommandations personnalisées.
-- **Fonctionnalités cartographiques** : Ajouter un regroupement pour les événements proches sur la carte.
-- **Améliorations IA** : Améliorer l’intégration de Dialogflow avec des scénarios conversationnels plus riches.
-
+# Améliorations
+Déployer l'application
+Filtrage avancé : Standardiser les formats de date entre les services pour un filtrage correct
+Plateformes supplémentaires : Intégrer davantage de pages pour le scraping comme GetYourGuide, Funbooker, Civitatis et peut-être des services intégrés comme PredictHQ
+Améliorations de l'IA : Finaliser l'intégration de Dialogflow, enrichir l'intégration de Dialogflow avec davantage de scénarios conversationnels, entraîner le modèle, améliorer l'intégration de l'IA
+Comptes utilisateur : Intégrer l'authentification des utilisateurs, les favoris, l'historique, etc.
+Fonctionnalités de la carte : Ajouter le regroupement des événements proches sur la carte.
 ---
 
