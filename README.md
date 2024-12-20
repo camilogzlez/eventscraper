@@ -220,11 +220,9 @@ Ce projet est conçu pour récupérer des activités depuis Eventbrite, TripAdvi
 ---
 
 # Améliorations
-Déployer l'application
-Filtrage avancé : Standardiser les formats de date entre les services pour un filtrage correct
-Plateformes supplémentaires : Intégrer davantage de pages pour le scraping comme GetYourGuide, Funbooker, Civitatis et peut-être des services intégrés comme PredictHQ
-Améliorations de l'IA : Finaliser l'intégration de Dialogflow, enrichir l'intégration de Dialogflow avec davantage de scénarios conversationnels, entraîner le modèle, améliorer l'intégration de l'IA
-Comptes utilisateur : Intégrer l'authentification des utilisateurs, les favoris, l'historique, etc.
-Fonctionnalités de la carte : Ajouter le regroupement des événements proches sur la carte.
----
-
+-**Déployer l'application**
+-**Filtrage avancé**: Standardiser les formats de date entre les services pour un filtrage correct
+-**Plateformes supplémentaires** : Intégrer davantage de pages pour le scraping comme GetYourGuide, Funbooker, Civitatis et peut-être des services intégrés comme PredictHQ
+-**Améliorations de l'IA** : Finaliser l'intégration de Dialogflow, enrichir l'intégration de Dialogflow avec davantage de scénarios conversationnels, entraîner le modèle, améliorer l'intégration de l'IA
+-**Comptes utilisateur** : Intégrer l'authentification des utilisateurs, les favoris, l'historique, etc.
+-**Fonctionnalités du Map** : Ajouter le regroupement des événements proches sur la carte.
